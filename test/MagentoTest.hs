@@ -30,7 +30,6 @@ moduleTests = testGroup "Modules"
   where
     modNamespace = Magento.getModuleNamespace module_ @?= ((Just "Foo") :: Maybe String)
     modName = Magento.getModuleName module_ @?= ((Just "Bar") :: Maybe String)
-    --modulePath cp m = printf "%s/app/code/%s/%s/%s" root </> "app/code" </> cp (fromJust $ Magento.getModuleNamespace m) (fromJust $ Magento.getModuleName m)
     modulePath cp m = root </> "app/code" </> cp </> (fromJust $ Magento.getModuleNamespace m) </> (fromJust $ Magento.getModuleName m)
     caseModuleDir cp = Magento.getModuleDir root cp module_ @?= ((Just (modulePath cp module_)) :: Maybe FilePath)
     
