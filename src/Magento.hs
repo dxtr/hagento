@@ -17,10 +17,8 @@ module Magento ( getBaseDir
 
 import Data.List (lookup, elem)
 import Data.List.Split (splitOn)
+import Safe (atMay)
 import System.FilePath.Posix
-
--- <erisco> \(a, b, c) root x -> if x == a then Just (getBaseDir root a </> c) else Nothing
--- <erisco> then you just write a list of the tuples you want
 
 getBaseDir :: FilePath -> String -> Maybe FilePath
 getBaseDir root "base" = Just root
@@ -46,11 +44,7 @@ getBaseDir root dir = (</> dir) <$> (lookup dir dirAssoc >>= getBaseDir root)
 -- Takes a module name in the form Namespace_Module and what part of it to return
 -- Returns Nothing in case of unexpected input
 parseModuleString :: String -> Int -> Maybe String
-parseModuleString s prt =
-  if prt >= 0 && elem '_' s then
-    Just (splitOn "_" s !! prt)
-  else
-    Nothing
+parseModuleString s prt = (splitOn "_" s) `atMay` prt
 
 getModuleNamespace :: String -> Maybe String
 getModuleNamespace s = parseModuleString s 0

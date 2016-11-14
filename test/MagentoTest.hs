@@ -4,7 +4,7 @@ import Data.Maybe (fromJust)
 import Test.Tasty
 import Test.Tasty.HUnit
 import Text.Printf (printf)
---import Test.Tasty.Discover (Assertion, (@?=), TestTree, testCase)
+import System.FilePath.Posix
 
 import qualified Magento
 
@@ -30,7 +30,8 @@ moduleTests = testGroup "Modules"
   where
     modNamespace = Magento.getModuleNamespace module_ @?= ((Just "Foo") :: Maybe String)
     modName = Magento.getModuleName module_ @?= ((Just "Bar") :: Maybe String)
-    modulePath cp m = root ++ "/app/code/" ++ cp ++ "/" ++ (fromJust $ Magento.getModuleNamespace m) ++ "/" ++ (fromJust $ Magento.getModuleName m)
+    --modulePath cp m = printf "%s/app/code/%s/%s/%s" root </> "app/code" </> cp (fromJust $ Magento.getModuleNamespace m) (fromJust $ Magento.getModuleName m)
+    modulePath cp m = root </> "app/code" </> cp </> (fromJust $ Magento.getModuleNamespace m) </> (fromJust $ Magento.getModuleName m)
     caseModuleDir cp = Magento.getModuleDir root cp module_ @?= ((Just (modulePath cp module_)) :: Maybe FilePath)
     
     coreModule = caseModuleDir "core"
@@ -41,7 +42,7 @@ baseDirTests :: TestTree
 baseDirTests = testGroup "Base Dir" cases
   where
     funcBaseDir d extra = Magento.getBaseDir root d @?= ((Just (root ++ extra ++ d)) :: Maybe FilePath)
-    caseBase f l = [testCase (printf "getBaseDir \"%s\"" name) (f name) | name <- l]
+    caseBase f l = [testCase (printf "getBaseDir (%s)" name) (f name) | name <- l]
     funcBaseBaseDir d = funcBaseDir d "/"
     funcBaseAppDir d = funcBaseDir d "/app/"
     funcBaseVarDir d = funcBaseDir d "/var/"
