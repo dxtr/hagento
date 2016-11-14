@@ -1,0 +1,14 @@
+resolver: lts-7.8
+
+packages:
+- '.'
+
+extra-deps:
+- persistent-2.2.4.1
+- esqueleto-2.4.3
+
+flags:
+  esqueleto:
+    mysql: true
+
+extra-package-dbs: []
