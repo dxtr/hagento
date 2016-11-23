@@ -21,14 +21,22 @@ library
                      , Magento
   build-depends:       base >= 4.7 && < 5
                      , text
+                     , containers
                      , conduit
                      , conduit-combinators
-                     , hxt
+                     , xml-conduit
+                     , xml-hamlet
                      , optparse-applicative
                      , esqueleto
                      , filepath
                      , split
                      , safe
+                     , async
+                     , mtl
+                     , unix
+                     , bytestring
+                     , hpath
+                     , transformers
   default-language:    Haskell2010
 
 executable hagento

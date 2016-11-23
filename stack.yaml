@@ -6,6 +6,7 @@ packages:
 extra-deps:
 - persistent-2.2.4.1
 - esqueleto-2.4.3
+- hpath-0.8.0
 
 flags:
   esqueleto:

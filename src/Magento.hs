@@ -13,9 +13,10 @@ module Magento ( getBaseDir
                , sessionDir
                , skinDir
                , tmpDir
-               , uploadDir) where
+               , uploadDir
+               ) where
 
-import Data.List (lookup, elem)
+import Data.List (elem, find, lookup)
 import Data.List.Split (splitOn)
 import Safe (atMay)
 import System.FilePath.Posix
@@ -53,12 +54,11 @@ getModuleName :: String -> Maybe String
 getModuleName s = parseModuleString s 1             
 
 getModuleDir :: FilePath -> String -> String -> Maybe FilePath
-getModuleDir root codepool module_ =
-  if elem codepool codepools then do
-    mdl <- getModuleName module_
-    ns <- getModuleNamespace module_
-    (</> mdl) <$> (</> ns) <$> (</> codepool) <$> getBaseDir root "code"
-  else Nothing
+getModuleDir root codepool module_ = do
+  mdl <- getModuleName module_
+  ns <- getModuleNamespace module_
+  cp <- find (\x -> x == codepool) codepools
+  (</> mdl) <$> (</> ns) <$> (</> cp) <$> getBaseDir root "code"
   where
     codepools = ["core", "community", "local"]
 
